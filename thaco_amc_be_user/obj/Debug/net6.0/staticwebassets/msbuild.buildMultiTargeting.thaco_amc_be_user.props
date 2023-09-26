@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\thaco_amc_be_user.props" />
+</Project>

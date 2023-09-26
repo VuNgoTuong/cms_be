@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\thaco_amc_be_user.props" />
+</Project>

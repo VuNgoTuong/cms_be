@@ -21,7 +21,6 @@ namespace UserManagement.Services.Implement.GeneralSetting
         private IHttpContextAccessor _httpContextAccessor;
         public readonly IAuthenticationRepository _authenticationRepository;
         private readonly int tokenExpirationTimeConf = int.Parse(ConfigHelper.Get(Constants.CONF_TOKEN_EXPIRATION_TIME));
-        private readonly int tokenExpirationTimeBy3rd = int.Parse(ConfigHelper.Get(Constants.CONF_TOKEN_EXPIRATION_TIME_3RD_BY_MINUTE));
         private readonly int tokenExpirationTimeBonusConf = int.Parse(ConfigHelper.Get(Constants.CONF_TOKEN_EXPIRATION_TIME_BONUS));
         public AuthenticationService(
             IAuthenticationRepository authenticationRepository,
@@ -163,24 +162,12 @@ namespace UserManagement.Services.Implement.GeneralSetting
                         string strValue = principal.claimsPrincipal.Claims.FirstOrDefault(claim => claim.Type == "c247_claims")?.Value ?? "";
                         claimModel = JsonConvert.DeserializeObject<ClaimsModel>(strValue);
                         tokenRes.username = claimModel?.user_name;
-                        tokenRes.extension_number = claimModel?.extension_number;
-                        tokenRes.role_id = claimModel?.roles;
-                        tokenRes.is_administrator = !string.IsNullOrEmpty(claimModel.is_administrator) ? bool.Parse(claimModel.is_administrator) : false;
-                        tokenRes.is_rootuser = !string.IsNullOrEmpty(claimModel.is_rootuser) ? bool.Parse(claimModel.is_rootuser) : false;
-                        tokenRes.is_supervisor = !string.IsNullOrEmpty(claimModel.is_supervisor) ? bool.Parse(claimModel.is_supervisor) : false;
-                        tokenRes.is_agent = !string.IsNullOrEmpty(claimModel.is_agent) ? bool.Parse(claimModel.is_agent) : false;
-                        tokenRes.asterisk_id = claimModel?.asterisk_id;
+                        tokenRes.is_rootuser = !string.IsNullOrEmpty(claimModel.is_rootuser) ? bool.Parse(claimModel.is_rootuser) : false;                       
                         tokenRes.tenant_id = claimModel?.tenant_id;
                         break;
                     case "HS256":
                         tokenRes.username = principal.claimsPrincipal.Claims.First(claim => claim.Type == "username").Value;
-                        tokenRes.extension_number = principal.claimsPrincipal.Claims.First(claim => claim.Type == "extension_number").Value;
-                        tokenRes.role_id = principal.claimsPrincipal.Claims.First(claim => claim.Type == "role_id").Value;
-                        tokenRes.is_administrator = !string.IsNullOrEmpty(principal.claimsPrincipal.Claims.First(claim => claim.Type == "is_administrator")?.Value) ? bool.Parse(principal.claimsPrincipal.Claims.First(claim => claim.Type == "is_administrator")?.Value) : false;
                         tokenRes.is_rootuser = !string.IsNullOrEmpty(principal.claimsPrincipal.Claims.First(claim => claim.Type == "is_rootuser")?.Value) ? bool.Parse(principal.claimsPrincipal.Claims.First(claim => claim.Type == "is_rootuser")?.Value) : false;
-                        tokenRes.is_supervisor = !string.IsNullOrEmpty(principal.claimsPrincipal.Claims.First(claim => claim.Type == "is_supervisor")?.Value) ? bool.Parse(principal.claimsPrincipal.Claims.First(claim => claim.Type == "is_supervisor")?.Value) : false;
-                        tokenRes.is_agent = !string.IsNullOrEmpty(principal.claimsPrincipal.Claims.First(claim => claim.Type == "is_agent")?.Value) ? bool.Parse(principal.claimsPrincipal.Claims.First(claim => claim.Type == "is_agent")?.Value) : false;
-                        tokenRes.asterisk_id = principal.claimsPrincipal.Claims.First(claim => claim.Type == "asterisk_id").Value;
                         tokenRes.tenant_id = principal.claimsPrincipal.Claims.First(claim => claim.Type == "tenant_id").Value;
                         break;
                 }

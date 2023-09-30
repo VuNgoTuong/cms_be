@@ -296,14 +296,14 @@ namespace UserManagement.Services.Implement.GeneralSetting
                 }
 
                 // Administrator không thể xóa khỏi admin profile
-                if (checkExistsProfile.profile_name == Constants.PROFILE_ADMIN)
-                {
-                    bool checkUserIsAdmin = await _profileRepository.CheckUserRemoveIsAdmin(tenandId, request.username);
-                    if (checkUserIsAdmin)
-                    {
-                        return new ResponseService<bool>(Constants.ADMINISTRATOR_CANNOT_BE_REMOVED_ADMIN_PROFILE).BadRequest(MessCodes.PROFILE_NOT_FOUND);
-                    }
-                }
+                //if (checkExistsProfile.profile_name == Constants.PROFILE_ADMIN)
+                //{
+                //    bool checkUserIsAdmin = await _profileRepository.CheckUserRemoveIsAdmin(tenandId, request.username);
+                //    if (checkUserIsAdmin)
+                //    {
+                //        return new ResponseService<bool>(Constants.ADMINISTRATOR_CANNOT_BE_REMOVED_ADMIN_PROFILE).BadRequest(MessCodes.PROFILE_NOT_FOUND);
+                //    }
+                //}
 
                 QTTS01_MapProfileUser checkExistsDataRemove = await _profileRepository.CheckExistsDataRemove(tenandId, request.username, request.profile_id);
                 if (checkExistsDataRemove == null)

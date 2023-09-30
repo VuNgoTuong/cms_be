@@ -392,54 +392,5 @@ namespace UserManagement.Common
         }
         #endregion
 
-        #region Check Prefix Contry
-        public static List<string> GetPhoneNumberWithPrefixCountry(string phoneNumber)
-        {
-            List<string> lstPhoneNumber = new List<string>();
-            lstPhoneNumber.Add(phoneNumber);
-            if (phoneNumber.Length > 9)
-            {
-                // Ký tự đầu  = 0
-                var first = phoneNumber.Substring(0, 1);
-                var second = phoneNumber.Substring(1, phoneNumber.Length - 1);
-                if (first == "0")
-                { 
-                    phoneNumber = first.Replace(first, ConfigManager.StaticGet(Constants.CONF_VIETNAM_INTERNATIONAL_CODE)) + second;
-                    lstPhoneNumber.Add(phoneNumber);
-
-                    phoneNumber = first.Replace(first, ConfigManager.StaticGet(Constants.CONF_VIETNAM_INTERNATIONAL_CODE_WITHOUT_PLUS)) + second;
-                    lstPhoneNumber.Add(phoneNumber);
-
-                    return lstPhoneNumber;
-                }
-
-                first = phoneNumber.Substring(0, 3);
-                second = phoneNumber.Substring(3, phoneNumber.Length - 3);
-                if (first.Contains(ConfigManager.StaticGet(Constants.CONF_VIETNAM_INTERNATIONAL_CODE)))
-                {
-                    phoneNumber = first.Replace(first, "0") + second;
-                    lstPhoneNumber.Add(phoneNumber);
-                    phoneNumber = first.Replace(first, ConfigManager.StaticGet(Constants.CONF_VIETNAM_INTERNATIONAL_CODE_WITHOUT_PLUS)) + second;
-                    lstPhoneNumber.Add(phoneNumber);
-
-                    return lstPhoneNumber;
-                }
-
-                first = phoneNumber.Substring(0, 2);
-                second = phoneNumber.Substring(2, phoneNumber.Length - 2);
-                if (first.Contains(ConfigManager.StaticGet(Constants.CONF_VIETNAM_INTERNATIONAL_CODE_WITHOUT_PLUS)))
-                {
-                    phoneNumber = first.Replace(first, "0") + second;
-                    lstPhoneNumber.Add(phoneNumber);
-                    phoneNumber = first.Replace(first, ConfigManager.StaticGet(Constants.CONF_VIETNAM_INTERNATIONAL_CODE)) + second;
-                    lstPhoneNumber.Add(phoneNumber);
-
-                    return lstPhoneNumber;
-                }
-            }
-
-            return lstPhoneNumber;
-        }
-        #endregion
     }
 }

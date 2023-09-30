@@ -9,7 +9,10 @@ namespace UserManagement.Services.Implement.GeneralSetting
 {
     public interface IBankService
     {
+        Task<ResponseService<BankResponse>> Create(BankRequest obj);
+        Task<ResponseService<bool>> Delete(Guid id);
         Task<ResponseService<ListResult<BankResponse>>> GetAll(PagingParam param);
         Task<ResponseService<BankResponse>> GetById(Guid id);
+        Task<ResponseService<BankResponse>> Update(BankRequest obj);
     }
 }

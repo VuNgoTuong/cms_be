@@ -30,7 +30,7 @@ namespace UserManagement.Controllers.GeneralSetting
             _moduleService = moduleService;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-all")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ResponseService<ListResult<ModuleResponse>>))]
@@ -48,7 +48,7 @@ namespace UserManagement.Controllers.GeneralSetting
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-all-is-show")]
         public async Task<IActionResult> GetAllWithIsShow()
@@ -64,7 +64,7 @@ namespace UserManagement.Controllers.GeneralSetting
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-by-id")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ResponseService<ModuleResponse>))]

@@ -27,4 +27,5 @@ namespace Repository.CustomModel
         public Guid tenant_id { get; set; }
         public List<SearchParam> search_list { get; set; }
     }
+
 }

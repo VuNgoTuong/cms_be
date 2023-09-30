@@ -25,6 +25,8 @@ namespace Repository.Model
         public virtual DbSet<QTTS01_Tenant> QTTS01_Tenants { get; set; } = null!;
         public virtual DbSet<QTTS01_User> QTTS01_Users { get; set; } = null!;
         public virtual DbSet<QTTS01_Bank> QTTS01_Banks { get; set; } = null!;
+        public virtual DbSet<QTTS01_FileManager> QTTS01_FileManagers { get; set; } = null!;
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -72,7 +74,7 @@ namespace Repository.Model
             {
                 entity.ToTable("QTTS01_Group");
 
-                entity.Property(e => e.ID).ValueGeneratedNever();
+                entity.Property(e => e.id).ValueGeneratedNever();
 
                 entity.Property(e => e.create_by)
                     .HasMaxLength(50)
@@ -246,7 +248,7 @@ namespace Repository.Model
             modelBuilder.Entity<QTTS01_Tenant>(entity =>
             {
                 entity.Property(e => e.id).ValueGeneratedNever();
-
+                entity.ToTable("QTTS01_Tenant");
                 entity.Property(e => e.address)
                     .HasMaxLength(250)
                     .HasDefaultValueSql("('')");
@@ -324,7 +326,7 @@ namespace Repository.Model
             {
                 entity.ToTable("QTTS01_Bank");
 
-                entity.Property(e => e.ID).ValueGeneratedNever();
+                entity.Property(e => e.id).ValueGeneratedNever();
 
                 entity.Property(e => e.create_by)
                     .HasMaxLength(50)
@@ -346,6 +348,45 @@ namespace Repository.Model
 
                 entity.Property(e => e.modify_time).HasColumnType("datetime");
             });
+
+            modelBuilder.Entity<QTTS01_FileManager>(entity =>
+            {
+                entity.Property(e => e.id).ValueGeneratedNever();
+                entity.ToTable("QTTS01_FileManager");
+
+                entity.Property(e => e.create_by)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('')");
+
+                entity.Property(e => e.create_time).HasColumnType("datetime");
+
+                entity.Property(e => e.file_name)
+                    .HasMaxLength(250)
+                    .HasDefaultValueSql("('')");
+
+                entity.Property(e => e.modify_by)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('')");
+
+                entity.Property(e => e.modify_time).HasColumnType("datetime");
+
+                entity.Property(e => e.size)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('')");
+
+                entity.Property(e => e.url_file)
+                    .HasMaxLength(250)
+                    .HasDefaultValueSql("('')");
+
+                entity.Property(e => e.object_file)
+                  .HasMaxLength(50)
+                  .IsUnicode(false)
+                  .HasDefaultValueSql("('')");
+            });
+
 
             OnModelCreatingPartial(modelBuilder);
         }

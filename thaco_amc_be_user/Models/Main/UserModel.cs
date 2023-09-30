@@ -72,7 +72,7 @@ namespace UserManagement.Models.Main
         [Required]
         [MaxLength(150)]
         public string fullname { get; set; }
-        [Required]
+        
         [MaxLength(50)]
         public string phone { get; set; }
         [Required]

@@ -18,4 +18,5 @@ namespace Common.Params.Base
             //this.field_get_list = new List<SearchParam>();
         }
     }
+
 }

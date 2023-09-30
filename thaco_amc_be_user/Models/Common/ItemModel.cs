@@ -14,6 +14,18 @@ namespace UserManagement.Models.Common
         public T item { get; set; }
         public Guid tenant_id { get; set; }
     }
+
+    public class ItemModelCustom
+    {
+        [Required]
+        public string _id { get; set; }
+    }
+    public class ItemModelCustom<T>
+    {
+        [Required]
+        public T item { get; set; }
+    }
+
     public class CheckRequest
     {
         public bool is_all_level { get; set; }

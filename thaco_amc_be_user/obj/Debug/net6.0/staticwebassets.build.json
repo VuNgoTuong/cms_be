@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "d4amr5LhpHHEk8Nn5/vzBCv5WcTaZKCh8KNhB5QKLEM=",
+  "Hash": "W8ATPkdHgNRq1nrEwDDWxlbdFoZA/0tKU5FJOCcKfw4=",
   "Source": "thaco_amc_be_user",
   "BasePath": "_content/thaco_amc_be_user",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "thaco_amc_be_user\\wwwroot",
       "Source": "thaco_amc_be_user",
-      "ContentRoot": "E:\\workspace\\thaco_amc_be_user\\thaco_amc_be_user\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ngotuongvu\\Desktop\\thaco_amc_be_user\\thaco_amc_be_user\\wwwroot\\",
       "BasePath": "_content/thaco_amc_be_user",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "E:\\workspace\\thaco_amc_be_user\\thaco_amc_be_user\\wwwroot\\Resources\\tenant_aa0d615f-2d43-42b4-bacb-578607858421\\avatar\\230bd1e4-de9b-4527-9d92-555f8ad09ed6.jpg",
+      "Identity": "C:\\Users\\ngotuongvu\\Desktop\\thaco_amc_be_user\\thaco_amc_be_user\\wwwroot\\Resources\\tenant_aa0d615f-2d43-42b4-bacb-578607858421\\avatar\\230bd1e4-de9b-4527-9d92-555f8ad09ed6.jpg",
       "SourceId": "thaco_amc_be_user",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\workspace\\thaco_amc_be_user\\thaco_amc_be_user\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ngotuongvu\\Desktop\\thaco_amc_be_user\\thaco_amc_be_user\\wwwroot\\",
       "BasePath": "_content/thaco_amc_be_user",
       "RelativePath": "Resources/tenant_aa0d615f-2d43-42b4-bacb-578607858421/avatar/230bd1e4-de9b-4527-9d92-555f8ad09ed6.jpg",
       "AssetKind": "All",

@@ -66,6 +66,18 @@ namespace Repository.Queries
                     this.OrderBy(sort);
         }
 
+        public Query(PagingParamCustom param, DbContextSql dbContext)
+        {
+            this.dbContext = dbContext;
+            baseQueryString = $"SELECT * FROM [{"dbo"}].[{typeof(T).Name}] ";
+            this.page = param.page;
+            this.limit = param.limit;
+
+            if (!String.IsNullOrEmpty(param.group_id.ToString()) && param.flag)
+                this.Where(new SearchParam() { name_field = "group_id", value_search = param.group_id.ToString() });
+
+        }
+
         // Search accurate
         public Query<T> Where(SearchParam param)
         {
@@ -79,19 +91,19 @@ namespace Repository.Queries
 
             // Replace ' (single quote) in search value by '' (2 single quotes))
             param.value_search = param.value_search.ToString().Replace("'", "''");
-            if (param.upper_bound != null)
-                param.upper_bound = param.upper_bound.ToString().Replace("'", "''");
+            //if (param.upper_bound != null)
+            //    param.upper_bound = param.upper_bound.ToString().Replace("'", "''");
 
             // Add conjunction to query string
-            if (String.IsNullOrEmpty(conditions))
-                conditions = "WHERE ";
-            else
-                conditions += $"{param.conjunction} ";
-            // Handle when no upper_bound is passed in
-            if (param.upper_bound == null)
-                conditions += $"{param.name_field} = '{param.value_search}' ";
-            else
-                conditions += $"({param.name_field} > '{param.value_search}' AND {param.name_field} < '{param.upper_bound})' ";
+            //if (String.IsNullOrEmpty(conditions))
+            //    conditions = "WHERE ";
+            //else
+            //    conditions += $"{param.conjunction} ";
+            //// Handle when no upper_bound is passed in
+            //if (param.upper_bound == null)
+            //    conditions += $"{param.name_field} = '{param.value_search}' ";
+            //else
+            //    conditions += $"({param.name_field} > '{param.value_search}' AND {param.name_field} < '{param.upper_bound})' ";
 
             return this;
         }
@@ -120,22 +132,22 @@ namespace Repository.Queries
             valueSearch = valueSearch.Replace("_", "[_]");
 
             // Add conjunction to query string
-            if (String.IsNullOrEmpty(conditions))
-                conditions = "WHERE ";
-            else
-                conditions += $"{param.conjunction} ";
+            //if (String.IsNullOrEmpty(conditions))
+            //    conditions = "WHERE ";
+            //else
+            //    conditions += $"{param.conjunction} ";
 
 
             // Handle convert or not
             // if search value is unicode (accented) then search accurate to input string
-            if (isUnicode)
-                conditions += $"CONVERT(VARCHAR(max), {param.name_field}, 103) LIKE '%{valueSearch}%' ";
-            // else convert datetime then search
-            else if (property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?))
-                conditions += $"[dbo].[ufn_convertDatetime]({param.name_field}) LIKE '%{valueSearch}%' ";
-            // else convert value from db then search unaccented
-            else
-                conditions += $"CONVERT(VARCHAR(max), dbo.ufn_removeMark({param.name_field}), 103) LIKE '%{valueSearch}%' ";
+            //if (isUnicode)
+            //    conditions += $"CONVERT(VARCHAR(max), {param.name_field}, 103) LIKE '%{valueSearch}%' ";
+            //// else convert datetime then search
+            //else if (property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?))
+            //    conditions += $"[dbo].[ufn_convertDatetime]({param.name_field}) LIKE '%{valueSearch}%' ";
+            //// else convert value from db then search unaccented
+            //else
+            //    conditions += $"CONVERT(VARCHAR(max), dbo.ufn_removeMark({param.name_field}), 103) LIKE '%{valueSearch}%' ";
 
             return this;
         }

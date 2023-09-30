@@ -8,6 +8,16 @@ namespace Common.Params.Base
         public Guid tenant_id { get; set; }
         public bool flag { get; set; } = true;
     }
+
+    public class BaseParamCustom
+    {
+        public Guid group_id { get; set; }
+        public bool flag { get; set; } = true;
+    }
+    public class BaseParamCustomGetAll
+    {
+        public bool flag { get; set; } = true;
+    }
     public class TopicParam
     {
         public Object data { get; set; }

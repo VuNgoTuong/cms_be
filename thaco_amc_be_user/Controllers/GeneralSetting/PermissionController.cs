@@ -30,7 +30,7 @@ namespace UserManagement.Controllers.GeneralSetting
             _permissionService = permissionService;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-all")]
         [PermissionAttributeFilter("Permission Object", "access")]
@@ -109,7 +109,7 @@ namespace UserManagement.Controllers.GeneralSetting
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-by-id")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ResponseService<PermissionResponse>))]
@@ -127,7 +127,7 @@ namespace UserManagement.Controllers.GeneralSetting
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-list-permission-by-user")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ResponseService<List<PermissionResShort>>))]
@@ -145,7 +145,7 @@ namespace UserManagement.Controllers.GeneralSetting
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-permission-a-object-by-user")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ResponseService<PermissionResShort>))]
@@ -165,7 +165,7 @@ namespace UserManagement.Controllers.GeneralSetting
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-status-permission-by-type-and-name")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ResponseService<bool>))]
@@ -183,7 +183,7 @@ namespace UserManagement.Controllers.GeneralSetting
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-list-permission-by-profile")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ResponseService<ListResult<PermissionResponse>>))]

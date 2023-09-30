@@ -30,9 +30,17 @@ namespace UserManagement.Config
             CreateMap<QTTS01_Permission, PermissionResponse>().ReverseMap();
             CreateMap<ListResult<QTTS01_Permission>, ListResult<PermissionResponse>>().ReverseMap();
 
+            CreateMap<BankRequest, QTTS01_Bank>().ReverseMap();
             CreateMap<QTTS01_Bank, BankResponse>().ReverseMap();
             CreateMap<ListResult<QTTS01_Bank>, ListResult<BankResponse>>().ReverseMap();
 
+            CreateMap<GroupRequest, QTTS01_Group>().ReverseMap();
+            CreateMap<QTTS01_Group, GroupResponse>().ReverseMap();
+            CreateMap<ListResult<QTTS01_Group>, ListResult<GroupResponse>>().ReverseMap();
+
+            CreateMap<TenantRequest, QTTS01_Tenant>().ReverseMap();
+            CreateMap<QTTS01_Tenant, TenantResponse>().ReverseMap();
+            CreateMap<ListResult<QTTS01_Tenant>, ListResult<TenantResponse>>().ReverseMap();
 
         }
     }

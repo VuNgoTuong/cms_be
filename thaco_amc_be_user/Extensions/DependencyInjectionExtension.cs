@@ -21,6 +21,8 @@ namespace UserManagement.Extensions
             services.AddTransient<IPermissionObjectService, PermissionObjectService>();
             services.AddTransient<IChangePasswordLogService, ChangePasswordLogService>();
             services.AddTransient<IBankService, BankService>();
+            services.AddTransient<IGroupService, GroupService>();
+            services.AddTransient<ITenantService, TenantService>();
 
 
             //Repository
@@ -34,6 +36,8 @@ namespace UserManagement.Extensions
             services.AddTransient<IPermissionObjectRepository, PermissionObjectRepository>();
             services.AddTransient<IChangePasswordLogRepository, ChangePasswordLogRepository>();
             services.AddTransient<IBankRepository, BankRepository>();
+            services.AddTransient<IGroupRepository, GroupRepository>();
+            services.AddTransient<ITenantRepository, TenantRepository>();
 
         }
     }

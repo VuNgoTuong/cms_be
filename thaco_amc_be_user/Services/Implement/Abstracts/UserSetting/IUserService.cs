@@ -14,6 +14,5 @@ namespace UserManagement.Services.Implement.UserSetting
         Task<ResponseService<ListResult<UserCustomResponse>>> GetAll(PagingParam param);
         Task<ResponseService<UserCustomResponse>> GetById(string username);
         Task<ResponseService<UserCustomResponse>> Update(UserUpdateRequest obj);
-        Task<ResponseService<UserCustomResponse>> UpdateInformation(UpdateInformation request);
     }
 }

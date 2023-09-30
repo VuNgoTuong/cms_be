@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "AtNYPJCCw3lCibFLDFuAyJEuDZIkw2P5Mx74WdrzLwTXc5e0v2jRwuFMQ1bhT57mP1/ST0TgOhk/l2YMbj968w==",
+  "dgSpecHash": "4jn3z7vhyZQSe2tG0+tafeJB3n7Z9VsNQj23jFTxrc79YUn/vSWD9dvSZLPJ5idk+cVyRJ1lxABjpn+PYMLIFA==",
   "success": true,
-  "projectFilePath": "E:\\workspace\\thaco_amc_be_user\\Common\\Common.csproj",
+  "projectFilePath": "C:\\Users\\ngotuongvu\\Desktop\\thaco_amc_be_user\\Common\\Common.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ngotuongvu\\.nuget\\packages\\log4net\\2.0.15\\log4net.2.0.15.nupkg.sha512",
     "C:\\Users\\ngotuongvu\\.nuget\\packages\\microsoft.extensions.configuration\\6.0.0\\microsoft.extensions.configuration.6.0.0.nupkg.sha512",

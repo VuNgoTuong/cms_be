@@ -34,7 +34,7 @@ namespace UserManagement.Controllers.GeneralSetting
             _mapProfileUserService = mapProfileUserService;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-all")]
         [PermissionAttributeFilter("User Management", "access")]
@@ -53,7 +53,7 @@ namespace UserManagement.Controllers.GeneralSetting
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-by-id")]
         [PermissionAttributeFilter("User Management", "access")]
@@ -114,7 +114,7 @@ namespace UserManagement.Controllers.GeneralSetting
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-list-user-by-profile")]
         [PermissionAttributeFilter("User Management", "access")]

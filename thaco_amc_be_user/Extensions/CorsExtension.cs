@@ -26,7 +26,6 @@ namespace UserManagement.Extensions
                                             .AllowAnyHeader()
                                             .AllowAnyMethod();
                     });
-
             });
         }
     }

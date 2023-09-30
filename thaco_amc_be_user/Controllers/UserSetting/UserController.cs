@@ -29,7 +29,7 @@ namespace UserManagement.Controllers.UserSetting
             _userService = usertService; /// ghhyhhhh
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-all")]
         [PermissionAttributeFilter("User Management", "access")]
@@ -48,7 +48,7 @@ namespace UserManagement.Controllers.UserSetting
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-by-id")]
         [PermissionAttributeFilter("User Management", "access")]
@@ -129,24 +129,24 @@ namespace UserManagement.Controllers.UserSetting
             }
         }
 
-        [HttpPost]
-        [Authorized]
-        [Route("update-information")]
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ResponseService<UserCustomResponse>))]
-        [SwaggerResponse((int)HttpStatusCode.InternalServerError, Type = typeof(ResponseService<UserCustomResponse>))]
-        public async Task<IActionResult> UpdateInformation([FromBody] UpdateInformation request)
-        {
-            ResponseService<UserCustomResponse> response = await _userService.UpdateInformation(request);
-            if (response.status)
-            {
-                return Ok(response);
-            }
-            else
-            {
-                //await _logService.CreateKafkaErrorLog(Constants.LOG_TYPE_UPDATE, Constants.USER_MANAGEMENT_SERVICE, response.message, request, null);
-                return new ResponseFail<UserCustomResponse>().Error(response);
-            }
-        }
+        //[HttpPost]
+        //[Authorized]
+        //[Route("update-information")]
+        //[SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ResponseService<UserCustomResponse>))]
+        //[SwaggerResponse((int)HttpStatusCode.InternalServerError, Type = typeof(ResponseService<UserCustomResponse>))]
+        //public async Task<IActionResult> UpdateInformation([FromBody] UpdateInformation request)
+        //{
+        //    ResponseService<UserCustomResponse> response = await _userService.UpdateInformation(request);
+        //    if (response.status)
+        //    {
+        //        return Ok(response);
+        //    }
+        //    else
+        //    {
+        //        //await _logService.CreateKafkaErrorLog(Constants.LOG_TYPE_UPDATE, Constants.USER_MANAGEMENT_SERVICE, response.message, request, null);
+        //        return new ResponseFail<UserCustomResponse>().Error(response);
+        //    }
+        //}
 
         [HttpPost]
         [Authorized]

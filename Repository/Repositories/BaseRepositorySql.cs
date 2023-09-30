@@ -54,6 +54,24 @@ namespace Repository.Repositories
             return new ListResult<T>(datas, total);
         }
 
+        public virtual async Task<IEnumerable<T>> GetAllCustom()
+        {
+            using (var _dbContextSql = new DbContextSql())
+            {
+                return await _dbContextSql.Set<T>().ToListAsync();
+            }
+        }
+
+        public virtual async Task<ListResult<T>> GetAllCustom(PagingParamCustom param)
+        {
+            Query<T> query = new Query<T>(param, _db);
+
+            List<T> datas = await query.ToListAsync();
+            int total = await query.CountAsync();
+
+            return new ListResult<T>(datas, total);
+        }
+
         public async virtual Task<T> Update(T obj, Object id)
         {
             var entity = await _db.Set<T>().FindAsync(id);

@@ -2,12 +2,10 @@
 using Common;
 using Common.Commons;
 using Common.Params.Base;
-using Dapper;
 using Repository.CustomModel;
 using Repository.Model;
 using Repository.Repositories;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UserManagement.Common;
 using UserManagement.Config;
@@ -17,16 +15,13 @@ namespace UserManagement.Services.Implement.GeneralSetting
 {
     public class BankService : BaseService, IBankService
     {
-        //private readonly ILogService _logService;
         private readonly IBankRepository _bankRepository;
         public BankService(
-            //ILogService logService,
             IBankRepository bankRepository,
             ILogger logger,
             IConfigManager config,
             IMapper mapper) : base(config, logger, mapper)
         {
-            //_logService = logService;
             _bankRepository = bankRepository;
         }
 
@@ -35,9 +30,7 @@ namespace UserManagement.Services.Implement.GeneralSetting
             try
             {
                 _logger.LogInfo(GetMethodName(new System.Diagnostics.StackTrace()));
-
                 param.tenant_id = SessionStore.Get<Guid>(Constants.KEY_SESSION_TENANT_ID);
-                string currentUser = SessionStore.Get<string>(Constants.KEY_SESSION_USER_ID);
 
                 ListResult<QTTS01_Bank> bankModel = await _bankRepository.GetAll(param);
                 ListResult<BankResponse> result = _mapper.Map<ListResult<QTTS01_Bank>, ListResult<BankResponse>>(bankModel);
@@ -58,7 +51,7 @@ namespace UserManagement.Services.Implement.GeneralSetting
                 _logger.LogInfo(GetMethodName(new System.Diagnostics.StackTrace()));
                 Guid tenantId = SessionStore.Get<Guid>(Constants.KEY_SESSION_TENANT_ID);
 
-                QTTS01_Bank data = await _bankRepository.GetSingle(x => x.ID == id && x.tenant_id == tenantId);
+                QTTS01_Bank data = await _bankRepository.GetSingle(x => x.id == id && x.tenant_id == tenantId);
                 BankResponse result = _mapper.Map<QTTS01_Bank, BankResponse>(data);
 
                 return new ResponseService<BankResponse>(result);
@@ -70,58 +63,89 @@ namespace UserManagement.Services.Implement.GeneralSetting
             }
         }
 
-        public async Task<ResponseService<BankResponse>> Create(BankRequest request)
+        public async Task<ResponseService<BankResponse>> Create(BankRequest obj)
         {
             try
             {
                 _logger.LogInfo(GetMethodName(new System.Diagnostics.StackTrace()));
-                request.AddInfo();
+                obj.AddInfo();
 
-                bool checkExistsProfileName = await _bankRepository.CheckExistsAnyAsync(x => x.tenant_id == request.tenant_id && x.bank_name.ToLower() == request.bank_name.Trim().ToLower());
-                if (checkExistsProfileName)
+                bool checkExistsBankName = await _bankRepository.CheckExistsAnyAsync(x => x.bank_name.ToLower() == obj.bank_name.Trim().ToLower() && x.tenant_id == obj.tenant_id);
+                if (checkExistsBankName)
                 {
-                    return new ResponseService<BankResponse>(Constants.PROFILE_HAS_ALREADY_EXISTED).BadRequest(MessCodes.PROFILE_HAS_ALREADY_EXISTED);
+                    return new ResponseService<BankResponse>(Constants.BANK_NAME_IS_ALREADY_EXISTS).BadRequest(MessCodes.BANK_NAME_IS_ALREADY_EXISTS);
                 }
 
-                // Profile entity
-                QTTS01_Bank profileEntity = _mapper.Map<BankRequest, QTTS01_Bank>(request);
-                // Permission object entity
-                List<QTTS01_Permission> permissionEntities = new List<QTTS01_Permission>();
-                List<QTTS01_PermissionObject> permissionObjectList = await _bankRepository.GetPermissionObjectListByTenant(request.tenant_id);
-                foreach (QTTS01_PermissionObject permissionObject in permissionObjectList)
-                {
-                    QTTS01_Permission permissionEntity = new QTTS01_Permission();
-                    permissionEntity.id = Guid.NewGuid();
-                    permissionEntity.profile_id = profileEntity.ID;
-                    permissionEntity.permissionobject_id = permissionObject.id;
-                    permissionEntity.object_name = permissionObject.object_name;
-                    permissionEntity.description = permissionObject.object_name;
-                    permissionEntity.is_allow_create = true;
-                    permissionEntity.is_allow_edit = true;
-                    permissionEntity.is_allow_delete = true;
-                    permissionEntity.is_allow_access = true;
-                    permissionEntity.is_active = true;
-                    permissionEntity.create_time = profileEntity.create_time;
-                    permissionEntity.create_by = profileEntity.create_by;
-                    permissionEntity.modify_time = profileEntity.create_time;
-                    permissionEntity.modify_by = profileEntity.create_by;
-                    permissionEntity.tenant_id = profileEntity.tenant_id;
+                QTTS01_Bank entity = _mapper.Map<BankRequest, QTTS01_Bank>(obj);
+                await _bankRepository.Create(entity);
 
-                    permissionEntities.Add(permissionEntity);
-                }
-
-                await _bankRepository.CreateCustom(profileEntity, permissionEntities);
-
-                ProfileResponse result = _mapper.Map<QTTS01_Profile, ProfileResponse>(profileEntity);
-
-                // Send data log
-                //await _logService.CreateKafkaLog(Constants.LOG_TYPE_CREATE, Constants.PROFILE_SERVICE, request, null);
-                return new ResponseService<ProfileResponse>(result);
+                BankResponse result = _mapper.Map<QTTS01_Bank, BankResponse>(entity);
+                return new ResponseService<BankResponse>(result);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex);
-                return new ResponseService<ProfileResponse>(ex);
+                return new ResponseService<BankResponse>(ex);
+            }
+        }
+
+        public async Task<ResponseService<BankResponse>> Update(BankRequest obj)
+        {
+            try
+            {
+                obj.UpdateInfo();
+                _logger.LogInfo(GetMethodName(new System.Diagnostics.StackTrace()));
+
+                QTTS01_Bank checkExists = await _bankRepository.GetSingle(x => x.id == obj.id && x.tenant_id == obj.tenant_id);
+                if (checkExists == null)
+                {
+                    return new ResponseService<BankResponse>(Constants.BANK_NOT_FOUND).BadRequest(MessCodes.BANK_NOT_FOUND);
+                }
+
+                bool checkExistsName = await _bankRepository.CheckExistsAnyAsync(x => x.id != obj.id && x.tenant_id == obj.tenant_id);
+                if (checkExists == null)
+                {
+                    return new ResponseService<BankResponse>(Constants.BANK_NOT_FOUND).BadRequest(MessCodes.BANK_NOT_FOUND);
+                }
+
+                QTTS01_Bank entity = _mapper.Map<BankRequest, QTTS01_Bank>(obj);
+                entity.create_by = checkExists.create_by;
+                entity.create_time = checkExists.create_time;
+                entity.is_active = checkExists.is_active;
+
+                await _bankRepository.Update(entity, obj.id);
+                BankResponse result = _mapper.Map<QTTS01_Bank, BankResponse>(entity);
+
+                return new ResponseService<BankResponse>(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+                return new ResponseService<BankResponse>(ex);
+            }
+        }
+
+        public async Task<ResponseService<bool>> Delete(Guid id)
+        {
+            try
+            {
+                _logger.LogInfo(GetMethodName(new System.Diagnostics.StackTrace()));
+                Guid tenantId = SessionStore.Get<Guid>(Constants.KEY_SESSION_TENANT_ID);
+
+                QTTS01_Bank checkExists = await _bankRepository.GetSingle(x => x.id == id && x.tenant_id == tenantId);
+                if (checkExists == null)
+                {
+                    return new ResponseService<bool>(Constants.BANK_NOT_FOUND).BadRequest(MessCodes.BANK_NOT_FOUND);
+                }
+
+                await _bankRepository.DeleteCustom(checkExists);
+
+                return new ResponseService<bool>(true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+                return new ResponseService<bool>(ex);
             }
         }
     }

@@ -1,11 +1,9 @@
-﻿using Common.Params.Base;
-using Repository.CustomModel;
-using Repository.Model;
+﻿using Repository.Model;
 
 namespace Repository.Repositories
 {
-    public interface IBankRepository: IBaseRepositorySql<QTTS01_Bank>
+    public interface IBankRepository : IBaseRepositorySql<QTTS01_Bank>
     {
-       
+        Task<bool> DeleteCustom(QTTS01_Bank bankEntity);
     }
 }

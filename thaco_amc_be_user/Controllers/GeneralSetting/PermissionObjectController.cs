@@ -28,7 +28,7 @@ namespace UserManagement.Controllers.GeneralSetting
             _permissionObjectService = permissionObjectService;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-all")]
         [PermissionAttributeFilter("Permission Object", "access")]
@@ -47,7 +47,7 @@ namespace UserManagement.Controllers.GeneralSetting
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorized]
         [Route("get-by-id")]
         [PermissionAttributeFilter("Permission Object", "access")]

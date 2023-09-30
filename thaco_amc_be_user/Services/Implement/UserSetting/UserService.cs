@@ -92,6 +92,12 @@ namespace UserManagement.Services.Implement.UserSetting
                 _logger.LogInfo(GetMethodName(new System.Diagnostics.StackTrace()));
                 obj.AddInfo();
 
+                QTTS01_User checkAgent = await _userRepository.GetSingle(x => x.username == obj.username && x.tenant_id == obj.tenant_id);
+                if (checkAgent != null)
+                {
+                    return new ResponseService<UserCustomResponse>(Constants.USERNAME_IS_EXISTS).BadRequest(MessCodes.USERNAME_IS_EXISTS);
+                }
+
                 UploadFileReponse generateDefaultAvatar = GenerateAvatar(obj.username, obj.tenant_id);
                 obj.avatar = generateDefaultAvatar.file;
                 string accessKey = Guid.NewGuid().ToString();
@@ -104,6 +110,7 @@ namespace UserManagement.Services.Implement.UserSetting
 
                 // Model response
                 UserCustomResponse result = _mapper.Map<QTTS01_User, UserCustomResponse>(userEntity);
+                result.avatar = $"{urlKongBCC}{result.avatar}";
 
                 return new ResponseService<UserCustomResponse>(result);
             }
@@ -176,41 +183,41 @@ namespace UserManagement.Services.Implement.UserSetting
                 return new ResponseService<bool>(ex);
             }
         }
-        public async Task<ResponseService<UserCustomResponse>> UpdateInformation(UpdateInformation request)
-        {
-            try
-            {
-                UserCustomResponse result = null;
-                Guid tenantId = SessionStore.Get<Guid>(Constants.KEY_SESSION_TENANT_ID);
-                Guid asteriskId = SessionStore.Get<Guid>(Constants.KEY_SESSION_ASTERISK_ID);
-                request.username = SessionStore.Get<string>(Constants.KEY_SESSION_USER_ID);
+        //public async Task<ResponseService<UserCustomResponse>> UpdateInformation(UpdateInformation request)
+        //{
+        //    try
+        //    {
+        //        UserCustomResponse result = null;
+        //        Guid tenantId = SessionStore.Get<Guid>(Constants.KEY_SESSION_TENANT_ID);
+        //        Guid asteriskId = SessionStore.Get<Guid>(Constants.KEY_SESSION_ASTERISK_ID);
+        //        request.username = SessionStore.Get<string>(Constants.KEY_SESSION_USER_ID);
 
-                QTTS01_User checkExistsUser = await _userRepository.GetSingle(x => x.username == request.username && x.tenant_id == tenantId);
-                if (checkExistsUser == null)
-                {
-                    return new ResponseService<UserCustomResponse>(Constants.USER_NOT_FOUND).BadRequest(MessCodes.DATA_NOT_FOUND);
-                }
+        //        QTTS01_User checkExistsUser = await _userRepository.GetSingle(x => x.username == request.username && x.tenant_id == tenantId);
+        //        if (checkExistsUser == null)
+        //        {
+        //            return new ResponseService<UserCustomResponse>(Constants.USER_NOT_FOUND).BadRequest(MessCodes.DATA_NOT_FOUND);
+        //        }
 
-                // Old data to create log
-                UserCustomResponse oldData = _mapper.Map<QTTS01_User, UserCustomResponse>(checkExistsUser);
+        //        // Old data to create log
+        //        UserCustomResponse oldData = _mapper.Map<QTTS01_User, UserCustomResponse>(checkExistsUser);
 
-                checkExistsUser.fullname = string.IsNullOrEmpty(request.fullname) ? checkExistsUser.fullname : request.fullname;
-                checkExistsUser.phone = string.IsNullOrEmpty(request.phone) ? checkExistsUser.phone : request.phone;
-                checkExistsUser.avatar = string.IsNullOrEmpty(request.avatar) ? checkExistsUser.avatar : request.avatar;
-                checkExistsUser.description = string.IsNullOrEmpty(request.description) ? checkExistsUser.description : request.description;
+        //        checkExistsUser.fullname = string.IsNullOrEmpty(request.fullname) ? checkExistsUser.fullname : request.fullname;
+        //        checkExistsUser.phone = string.IsNullOrEmpty(request.phone) ? checkExistsUser.phone : request.phone;
+        //        checkExistsUser.avatar = string.IsNullOrEmpty(request.avatar) ? checkExistsUser.avatar : request.avatar;
+        //        checkExistsUser.description = string.IsNullOrEmpty(request.description) ? checkExistsUser.description : request.description;
 
-                // Update entity
-                await _userRepository.Update(checkExistsUser, checkExistsUser.username);
-                result = _mapper.Map<QTTS01_User, UserCustomResponse>(checkExistsUser);
+        //        // Update entity
+        //        await _userRepository.Update(checkExistsUser, checkExistsUser.username);
+        //        result = _mapper.Map<QTTS01_User, UserCustomResponse>(checkExistsUser);
 
-                return new ResponseService<UserCustomResponse>(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex);
-                return new ResponseService<UserCustomResponse>(ex);
-            }
-        }
+        //        return new ResponseService<UserCustomResponse>(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex);
+        //        return new ResponseService<UserCustomResponse>(ex);
+        //    }
+        //}
         public virtual async Task<ResponseService<bool>> ChangePassword(UpdatePasswordRequest request)
         {
             try
@@ -791,12 +798,13 @@ namespace UserManagement.Services.Implement.UserSetting
             }
 
             string pathSaveFile = $"{_webHostEnvironment.WebRootPath}{pathResourceAvatarByTenant}/{fileName}";
+            string pathSaveDB= $"{pathResourceAvatarByTenant}/{fileName}";
             string pathResponse = $"{urlKongBCC}{pathResourceAvatarByTenant}/{fileName}";
 
             CommonFunc.GenerateAvatar(username, pathSaveFile);
 
             UploadFileReponse response = new UploadFileReponse();
-            response.file = pathResponse;
+            response.file = pathSaveDB;// pathResponse;
             response.file_url = pathResponse;
             return response;
         }

@@ -163,5 +163,8 @@
         public static readonly int YOU_DONT_HAVE_PERMISSION_TO_DO_THIS = 159;
         public static readonly int CALLFLOW_NAME_HAS_ALREADY_EXISTED = 160;
         public static readonly int WORK_SCREEN_NAME_HAS_ALREADY_EXISTED = 161;
+        public static readonly int BANK_NAME_IS_ALREADY_EXISTS = 162;
+        public static readonly int BANK_NOT_FOUND = 163;
+        public static readonly int GROUP_NOT_FOUND = 164;
     }
 }

@@ -20,6 +20,9 @@ namespace UserManagement.Models.Main
 
     public class BankRequest : BaseModelSQL
     {
+        [Required]
+        [MaxLength(150)]
+        public string bank_code { get; set; }
         [MaxLength(150)]
         public string bank_name { get; set; }
         [MaxLength(150)]

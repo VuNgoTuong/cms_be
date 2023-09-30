@@ -5,7 +5,7 @@ namespace Repository.Model
 {
     public partial class QTTS01_Group
     {
-        public Guid ID { get; set; }
+        public Guid id { get; set; }
         public string group_code { get; set; } = null!;
         public string group_name { get; set; } = null!;
         public bool is_active { get; set; }
